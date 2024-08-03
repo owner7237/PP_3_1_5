@@ -2,8 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>Spring Security Example</title>
+    <link rel="stylesheet" type="text/css" th:href="@{styles/style.css}">
 </head>
 <body>
+<div class="topnav">
+    <a href="/">Index</a>
+    <a sec:authorize="isAuthenticated()" href="/user">User</a>
+    <a sec:authorize="hasRole('ADMIN')" href="/admin">Admin Panel</a>
+    <a sec:authorize="isAuthenticated()" href="/logout">Logout</a>
+    <a sec:authorize="isAnonymous()" href="/login">Login</a>
+</div>
 <h1>Welcome to Index PAGE!</h1>
 
 
