@@ -22,9 +22,9 @@ public class UserDetails implements UserDetailsService {
 
     @Transactional
     @Override
-    public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        ru.kata.spring.boot_security.demo.models.User user = userRepository.findByUsername(username);
-        return new User(user.getUsername(), user.getPassword(), authorities(user));
+    public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        ru.kata.spring.boot_security.demo.models.User user = userRepository.findByEmail(email);
+        return new User(user.getEmail(), user.getPassword(), authorities(user));
     }
 
     private Collection<? extends GrantedAuthority> authorities(ru.kata.spring.boot_security.demo.models.User user) {

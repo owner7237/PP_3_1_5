@@ -9,6 +9,8 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
@@ -23,14 +25,8 @@ public class AdminController {
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
-    @GetMapping()
-    public String adminPage(ModelMap modelMap) {
-        modelMap.addAttribute("userList", userService.userList());
-        modelMap.addAttribute("allRoles", roleRepository.findAll());
-        return "users";
-    }
     @PostMapping(value = "/add")
-    public String addUser(@ModelAttribute("newuser") User user) {
+    public String addUser(@ModelAttribute User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.saveUser(user);
         return "redirect:/admin";
@@ -40,13 +36,7 @@ public class AdminController {
         userService.deleteUser(userService.findById(id));
         return "redirect:/admin";
     }
-    @GetMapping(value = "/edit")
-    public String editUserPage(@RequestParam("id") Long id, ModelMap modelMap) {
-        modelMap.addAttribute("user", userService.findById(id));
-        modelMap.addAttribute("allRoles", roleRepository.findAll());
-        return "user-edit";
-    }
-    @PostMapping(value = "/edit/submit")
+    @PostMapping(value = "/edit")
     public String editUser(@ModelAttribute User user) {
         User originalUser = userService.findById(user.getId());
         if (user.getPassword().isEmpty()){
@@ -57,5 +47,12 @@ public class AdminController {
         }
         userService.saveUser(user);
         return "redirect:/admin";
+    }
+    @GetMapping()
+    public String adminPageBoot(ModelMap modelMap, Principal principal) {
+        modelMap.addAttribute("currentUser", userService.findByEmail(principal.getName()));
+        modelMap.addAttribute("users", userService.userList());
+        modelMap.addAttribute("allRoles", roleRepository.findAll());
+        return "adminPage";
     }
 }
