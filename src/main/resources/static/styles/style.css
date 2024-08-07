@@ -14,3 +14,9 @@
     text-align: center;
     font-weight: bold;
 }
+.card-header {
+    display: flex;
+}
+.card-header > button {
+    margin-left: auto;
+}

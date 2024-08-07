@@ -24,7 +24,7 @@ public class User implements UserDetails {
     private String lastname;
     private Byte age;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
     @LazyCollection(LazyCollectionOption.EXTRA)
     @Fetch(FetchMode.JOIN)
     @JoinTable(name="users_roles",
@@ -62,7 +62,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return email;
     }
 
     @Override

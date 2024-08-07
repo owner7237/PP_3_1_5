@@ -8,6 +8,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
+    public Role() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +37,9 @@ public class Role implements GrantedAuthority {
     }
     @Override
     public String toString() {
+        return name;
+    }
+    public String toNiceString() {
         return name.substring(5);
     }
 
