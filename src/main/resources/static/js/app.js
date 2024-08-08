@@ -18,7 +18,7 @@ async function fillUsersTable() {
     let table = $('#usersTable tbody');
     table.empty();
 
-    await fetch('api/users')
+    await fetch('admin/api/users')
         .then(res => res.json())
         .then(users => {
             users.forEach(user => {
@@ -68,7 +68,7 @@ async function addUser() {
             'password': password,
             'roles': roles
         }
-        let res = await fetch('api/users', {method: 'PUT', headers: head, body: JSON.stringify(data)})
+        let res = await fetch('admin/api/users', {method: 'POST', headers: head, body: JSON.stringify(data)})
 
         if (res.ok) {
             fillUsersTable()
@@ -88,7 +88,7 @@ async function addUser() {
 async function fillUserEditModal() {
     $('.openEditModal').click(async function () {
         let userId = $(this).attr('data-userid')
-        await fetch('api/users/' + userId).then(res => {
+        await fetch('admin/api/users/' + userId).then(res => {
             res.json().then(user => {
                 $('#idEdit').val(user.id)
                 $('#firstNameEdit').val(user.firstname)
@@ -127,8 +127,8 @@ async function userEdit() {
             'roles': roles
         }
 
-        let res = await fetch('api/users',
-            {method: 'PATCH', headers: head, body: JSON.stringify(data)})
+        let res = await fetch('admin/api/users',
+            {method: 'PUT', headers: head, body: JSON.stringify(data)})
 
         if (res.ok) {
             fillUsersTable()
@@ -143,7 +143,7 @@ async function userEdit() {
 async function fillUserDeleteModal() {
     $('.openDeleteModal').click(async function () {
         let userId = $(this).attr('data-userid')
-        await fetch('api/users/' + userId).then(res => {
+        await fetch('admin/api/users/' + userId).then(res => {
             res.json().then(user => {
                 $('#idDelete').val(user.id)
                 $('#firstNameDelete').val(user.firstname)
@@ -172,7 +172,7 @@ async function deleteUser() {
     $('#userDeleteButton').click(async function () {
         let id = $('#idDelete').val()
 
-        let res = await fetch('api/users/' + id,
+        let res = await fetch('admin/api/users/' + id,
             {method: 'DELETE'})
 
         if (res.ok) {
