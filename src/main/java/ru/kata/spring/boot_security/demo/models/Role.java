@@ -8,12 +8,13 @@ import java.util.Objects;
 @Entity
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
-    public Role() {}
+    public Role() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique=true)
+    @Column(unique = true)
     private String name;
 
     public void setId(Long id) {
@@ -31,14 +32,17 @@ public class Role implements GrantedAuthority {
     public void setName(String name) {
         this.name = name;
     }
+
     @Override
     public String getAuthority() {
         return name;
     }
+
     @Override
     public String toString() {
         return name;
     }
+
     public String toNiceString() {
         return name.substring(5);
     }

@@ -18,6 +18,7 @@ public class AdminRestController {
     private UserService userService;
 
     private RoleService roleService;
+
     @Autowired
     public AdminRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
@@ -25,21 +26,24 @@ public class AdminRestController {
     }
 
     @GetMapping()
-    public ModelAndView adminPageBoot( Principal principal) {
+    public ModelAndView adminPageBoot(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("adminPage");
         modelAndView.addObject("currentUser", userService.findByEmail(principal.getName()));
         modelAndView.addObject("allRoles", roleService.roleList());
         return modelAndView;
     }
+
     @GetMapping("/api/users")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.userList();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
+
     @GetMapping("/api/users/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
         return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
     }
+
     @PutMapping("/api/users")
     public ResponseEntity editUser(@RequestBody User user) {
         userService.saveUser(user);
@@ -51,6 +55,7 @@ public class AdminRestController {
         userService.saveUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @DeleteMapping("/api/users/{id}")
     public ResponseEntity deleteUser(@PathVariable Long id) {
         userService.deleteUser(userService.findById(id));

@@ -10,6 +10,7 @@ import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
         user.getRoles().forEach(role -> role.setName(roleRepository.getById(role.getId()).getName()));
         userRepository.save(user);
     }
+
     @Override
     @Transactional
     public void deleteUser(User user) {
@@ -52,11 +54,13 @@ public class UserServiceImpl implements UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(
                 () -> new UsernameNotFoundException(String.format("User with ID: %s not found.", id)));
     }
+
     @Override
     public List<User> userList() {
         return userRepository.findAll();

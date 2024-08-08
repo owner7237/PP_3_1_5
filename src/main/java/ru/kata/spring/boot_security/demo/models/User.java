@@ -17,7 +17,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
     private String password;
     private String firstname;
@@ -27,9 +27,9 @@ public class User implements UserDetails {
     @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
     @LazyCollection(LazyCollectionOption.EXTRA)
     @Fetch(FetchMode.JOIN)
-    @JoinTable(name="users_roles",
-            joinColumns=  @JoinColumn(name="user_id", referencedColumnName="id"),
-            inverseJoinColumns= @JoinColumn(name="role_id", referencedColumnName="id") )
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles;
 
     public User() {
