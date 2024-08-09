@@ -20,11 +20,9 @@
 <div class="container-fluid">
     <div class="row navbar navbar-dark bg-dark">
         <div class="col">
-            <b class="text-white" th:text="${user.getEmail()}"></b>
-            <span id="userId" th:text="${user.id}" hidden="hidden"></span>
+            <b class="text-white" id="emailNavbar"></b>
             <span class="text-white"> with roles: </span>
-            <span class="text-white" th:each="roles : ${user.getRoles()}"
-                  th:text="${roles.toNiceString()} + ' '"></span>
+            <span class="text-white" id="rolesNavbar"></span>
         </div>
         <div class="col-auto">
             <a class="nav-link text-white" href="/logout">Logout</a>
@@ -46,7 +44,7 @@
                 <div class="card">
                     <div class="card-header bg-light font-weight-bold">
                         <h5>About user</h5>
-                        <button onclick="fillUsersTable()" class="btn btn-info">Refresh</button>
+                        <button onclick="fillPage()" class="btn btn-info">Refresh</button>
                     </div>
                     <div class="card-body">
                         <table id="usersTable" class="table table-striped">
@@ -81,33 +79,6 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 
-<script>
-    $(async function () {
-        await fillUsersTable()
-    })
-
-    async function fillUsersTable() {
-        let table = $('#usersTable tbody');
-        table.empty();
-        let userId = $('#userId').html()
-        await fetch('user/api/users/' + userId)
-            .then(res => res.json())
-            .then(user => {
-                let roles = ''
-                user.roles.forEach(role => roles += role.name.substring(5) + ' ')
-                let tableFilling = `$(
-                        <tr>
-                            <td>${user.id}</td>
-                            <td>${user.firstname}</td>
-                            <td>${user.lastname}</td>
-                            <td>${user.age}</td>
-                            <td>${user.email}</td>
-                            <td>${roles}</td>
-                        </tr>
-                )`;
-                table.append(tableFilling);
-            })
-    }
-</script>
+<script th:src="@{js/user.js}"></script>
 </body>
 </html>

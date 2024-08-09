@@ -18,9 +18,9 @@
 <div class="container-fluid">
     <div class="row navbar navbar-dark bg-dark">
         <div class="col">
-            <b class="text-white" th:utext="${currentUser.email}"></b>
-            <span class="text-white" th:utext="' with roles: '"></span>
-            <span class="text-white" th:each="role : ${currentUser.getRoles()}" th:utext="${role.toNiceString()} + ' '"></span>
+            <b class="text-white" id="emailNavbar"></b>
+            <span class="text-white"> with roles: </span>
+            <span class="text-white" id="rolesNavbar"></span>
         </div>
         <div class="col-auto">
             <a class="nav-link text-white" href="/logout">Logout</a>
@@ -113,11 +113,6 @@
                                     <div class="form-group">
                                         <label for="newRoles" class="col-form-label">Roles</label>
                                         <select class="form-control" name="roles" id="newRoles" size="2" multiple>
-                                            <option th:each="role : ${allRoles}"
-                                                    th:text="${role.toNiceString()}"
-                                                    th:value="${role.id}"
-                                                    th:name="${role.name}"
-                                                    th:selected="${role.name.equals('ROLE_USER')}"></option>
                                         </select>
                                     </div>
                                     <button type="button" class="btn btn-success" id="addUserButton">Add new user</button>
@@ -171,9 +166,6 @@
                     <div class="form-group">
                         <label for="rolesEdit" class="col-form-label">Roles</label>
                         <select class="form-control" name="roles" id="rolesEdit" size="2" multiple>
-                            <option th:each="role : ${allRoles}"
-                                    th:text="${role.toNiceString()}"
-                                    th:value="${role.id}"></option>
                         </select>
                     </div>
                 </div>
@@ -222,9 +214,6 @@
                     <div class="form-group">
                         <label for="rolesDelete" class="col-form-label">Roles</label>
                         <select class="form-control" name="roles" id="rolesDelete" size="2" multiple readonly="readonly">
-                            <option th:each="role : ${allRoles}"
-                                    th:text="${role.toNiceString()}"
-                                    th:value="${role.id}"></option>
                         </select>
                     </div>
                 </div>

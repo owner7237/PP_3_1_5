@@ -1,4 +1,6 @@
 $(async function () {
+    await fillPageNavbar()
+    await fillPageForms()
     await fillUsersTable()
     await fillUserEditModal()
     await fillUserDeleteModal()
@@ -14,11 +16,39 @@ const head = {
     'Referer': null
 }
 
+async function fillPageNavbar() {
+    await fetch('/api/user/')
+        .then(res => res.json())
+        .then(user => {
+            let userRoles = ''
+            user.roles.forEach(role => userRoles += role.name.substring(5) + ' ')
+
+            $('#emailNavbar').html(user.email)
+            $('#rolesNavbar').html(userRoles)
+        })
+}
+
+async function fillPageForms() {
+    await fetch('/api/admin/roles')
+        .then(res => res.json())
+        .then(roles => {
+            roles.forEach(role => {
+                let roleOption = `$(
+                    <option value="${role.id}" name="${role.name}">${role.name.substring(5)}</option>
+                    )`;
+                $('#newRoles').append(roleOption)
+                $('#rolesEdit').append(roleOption)
+                $('#rolesDelete').append(roleOption)
+            })
+
+        })
+}
+
 async function fillUsersTable() {
     let table = $('#usersTable tbody');
     table.empty();
 
-    await fetch('admin/api/users')
+    await fetch('/api/admin/users')
         .then(res => res.json())
         .then(users => {
             users.forEach(user => {
@@ -68,7 +98,7 @@ async function addUser() {
             'password': password,
             'roles': roles
         }
-        let res = await fetch('admin/api/users', {method: 'POST', headers: head, body: JSON.stringify(data)})
+        let res = await fetch('/api/admin/users', {method: 'POST', headers: head, body: JSON.stringify(data)})
 
         if (res.ok) {
             fillUsersTable()
@@ -88,7 +118,7 @@ async function addUser() {
 async function fillUserEditModal() {
     $('.openEditModal').click(async function () {
         let userId = $(this).attr('data-userid')
-        await fetch('admin/api/users/' + userId).then(res => {
+        await fetch('/api/admin/users/' + userId).then(res => {
             res.json().then(user => {
                 $('#idEdit').val(user.id)
                 $('#firstNameEdit').val(user.firstname)
@@ -127,11 +157,12 @@ async function userEdit() {
             'roles': roles
         }
 
-        let res = await fetch('admin/api/users',
+        let res = await fetch('/api/admin/users',
             {method: 'PUT', headers: head, body: JSON.stringify(data)})
 
         if (res.ok) {
-            fillUsersTable()
+            await fillPageNavbar()
+            await fillUsersTable()
             $('#editModal').modal('hide')
         } else {
             res.json().then(body => alert('Error editing user: ' + body.message))
@@ -143,7 +174,7 @@ async function userEdit() {
 async function fillUserDeleteModal() {
     $('.openDeleteModal').click(async function () {
         let userId = $(this).attr('data-userid')
-        await fetch('admin/api/users/' + userId).then(res => {
+        await fetch('/api/admin/users/' + userId).then(res => {
             res.json().then(user => {
                 $('#idDelete').val(user.id)
                 $('#firstNameDelete').val(user.firstname)
@@ -172,11 +203,11 @@ async function deleteUser() {
     $('#userDeleteButton').click(async function () {
         let id = $('#idDelete').val()
 
-        let res = await fetch('admin/api/users/' + id,
+        let res = await fetch('/api/admin/users/' + id,
             {method: 'DELETE'})
 
         if (res.ok) {
-            fillUsersTable()
+            await fillUsersTable()
             $('#deleteModal').modal('hide')
         } else {
             res.json().then(body => alert('Error deleting user: ' + body.message))

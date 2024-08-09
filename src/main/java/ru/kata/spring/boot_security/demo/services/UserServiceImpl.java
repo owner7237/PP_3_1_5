@@ -32,21 +32,15 @@ public class UserServiceImpl implements UserService {
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-
-        user.getRoles().forEach(role -> role.setName(roleRepository.getById(role.getId()).getName()));
+        if (user.getId() != null) {
+            user.getRoles().forEach(role -> role.setName(roleRepository.getById(role.getId()).getName()));
+        }
         userRepository.save(user);
     }
 
     @Override
     @Transactional
     public void deleteUser(User user) {
-        userRepository.delete(user);
-    }
-
-    @Transactional
-    @Override
-    public void deleteUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow();
         userRepository.delete(user);
     }
 
