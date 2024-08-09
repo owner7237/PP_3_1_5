@@ -40,7 +40,6 @@ async function fillPageForms() {
                 $('#rolesEdit').append(roleOption)
                 $('#rolesDelete').append(roleOption)
             })
-
         })
 }
 

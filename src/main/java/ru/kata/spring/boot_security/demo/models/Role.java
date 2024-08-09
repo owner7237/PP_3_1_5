@@ -43,10 +43,6 @@ public class Role implements GrantedAuthority {
         return name;
     }
 
-    public String toNiceString() {
-        return name.substring(5);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
